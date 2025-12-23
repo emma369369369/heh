@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Dapp - Security Research</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #1a1a2e;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: #16213e;
+            border-radius: 10px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #ab47bc;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 Security Research Demo</h1>
+        <p>This demonstrates wallet connection UX</p>
+        <button id="connectBtn">Connect Wallet</button>
+        <p id="status"></p>
+    </div>
+
+    <script>
+        document.getElementById('connectBtn').addEventListener('click', async () => {
+            const status = document.getElementById('status');
+            
+            // Check if Phantom is installed
+            if (!window.solana || !window.solana.isPhantom) {
+                status.textContent = 'Phantom wallet not detected';
+                return;
+            }
+            
+            try {
+                // This triggers the legitimate Phantom connection prompt
+                const response = await window.solana.connect();
+                status.textContent = 'Connected: ' + response.publicKey.toString();
+                
+                // STOP HERE - connection only, no transactions
+                console.log('Research note: Connection successful. User saw Phantom prompt.');
+            } catch (err) {
+                status.textContent = 'Connection cancelled or failed';
+            }
+        });
+    </script>
+</body>
+</html>
